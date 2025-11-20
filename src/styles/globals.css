@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cosmic-purple: #1A102C;
+  --deep-purple: #2D1B4E;
+  --glow-teal: #5DD9C1;
+  --glow-purple: #A78BFA;
+  --glass-bg: rgba(45, 27, 78, 0.3);
+  --glass-border: rgba(93, 217, 193, 0.3);
+}
+
+/* Spacing scale for consistent rhythm across the site */
+:root {
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+}
+
+/* Base vertical rhythm and harmonized spacing rules
+   - Keep headings and paragraphs consistent
+   - Ensure consistent gaps between direct children of main layout containers
+   - Only adjust spacing (margins/gaps), no colors or typography sizes
+*/
+
+/* Headings: even bottom margins, no top margins */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: var(--space-lg);
+}
+
+h1 {
+  margin-bottom: var(--space-2xl);
+}
+
+h2 {
+  margin-bottom: var(--space-xl);
+}
+
+h3 {
+  margin-bottom: var(--space-lg);
+}
+
+h4 {
+  margin-bottom: var(--space-md);
+}
+
+/* Paragraphs and basic text blocks */
+p,
+blockquote,
+figure,
+pre,
+address {
+  margin-top: 0;
+  margin-bottom: var(--space-md);
+}
+
+/* Lists: smaller spacing between items but consistent overall */
+ul,
+ol {
+  margin-top: 0;
+  margin-bottom: var(--space-md);
+  padding-left: 1.25rem;
+}
+
+ul li,
+ol li {
+  margin-bottom: var(--space-sm);
+}
+
+/* Forms and buttons: consistent vertical spacing between controls */
+form>*+* {
+  margin-top: var(--space-sm);
+}
+
+button,
+input,
+select,
+textarea {
+  margin: 0;
+}
+
+/* Apply consistent spacing between direct children of main layout containers
+   This creates an even rhythm inside cards, sections, and top-level layout regions
+*/
+:is(section, main, header, footer, article, nav, aside, .glass-card, .glass-card-intense, .card, .container)>*+* {
+  margin-top: var(--space-md);
+}
+
+/* Make sure smaller containers like sidebars and tool panels use slightly tighter spacing */
+:is(.sidebar, .panel, .glass-panel, .glass-card .sidebar)>*+* {
+  margin-top: var(--space-sm);
+}
+
+/* Normalize gaps for grouped inline elements when author used adjacent-button patterns */
+.btn-group>*+*,
+.button-row>*+* {
+  margin-left: var(--space-sm);
+}
+
+/* Ensure consistent spacing inside toast/toaster and other popup containers */
+.toaster>*+*,
+.sonner>*+*,
+.toast>*+* {
+  margin-top: var(--space-sm);
+}
+
+/* Reduce accidental double-spacing by removing margins from first children */
+:is(section, main, article, .glass-card, .glass-card-intense, .card)> :first-child {
+  margin-top: 0;
+}
+
+/* Small helper: utility to force equal padding on card interiors if needed */
+.card-inner,
+.glass-card .card-inner,
+.glass-card-intense .card-inner {
+  padding: var(--space-lg);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--cosmic-purple);
+  color: white;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 1.2;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1.3;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+p {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+button {
+  font-weight: 500;
+}
+
+input {
+  font-family: 'Manrope', sans-serif;
+}
+
+/* Glass morphism utility classes */
+.glass-card {
+  background: rgba(45, 27, 78, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(93, 217, 193, 0.2);
+  border-radius: 24px;
+  box-shadow:
+    0 8px 32px 0 rgba(0, 0, 0, 0.37),
+    inset 0 0 20px rgba(93, 217, 193, 0.05);
+}
+
+.glass-card-intense {
+  background: rgba(45, 27, 78, 0.6);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(93, 217, 193, 0.3);
+  border-radius: 24px;
+  box-shadow:
+    0 8px 32px 0 rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(93, 217, 193, 0.08);
+}
+
+.glow-border {
+  position: relative;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--cosmic-purple), var(--cosmic-purple)) padding-box,
+    linear-gradient(135deg, rgba(93, 217, 193, 0.5), rgba(167, 139, 250, 0.5)) border-box;
+  border-radius: 24px;
+}
+
+.glow-button {
+  background: linear-gradient(135deg, #A78BFA 0%, #5DD9C1 100%);
+  box-shadow:
+    0 4px 20px rgba(93, 217, 193, 0.4),
+    0 0 20px rgba(167, 139, 250, 0.3);
+  transition: all 0.3s ease;
+}
+
+.glow-button:hover {
+  box-shadow:
+    0 6px 30px rgba(93, 217, 193, 0.6),
+    0 0 30px rgba(167, 139, 250, 0.5);
+  transform: translateY(-2px);
+}
+
+.neon-glow {
+  box-shadow:
+    0 0 20px rgba(93, 217, 193, 0.3),
+    0 0 40px rgba(167, 139, 250, 0.2),
+    inset 0 0 20px rgba(93, 217, 193, 0.1);
+}
+
+/* Input styles */
+.glass-input {
+  background: rgba(26, 16, 44, 0.4);
+  border: 1px solid rgba(93, 217, 193, 0.2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+  border-color: rgba(93, 217, 193, 0.5);
+  box-shadow: 0 0 20px rgba(93, 217, 193, 0.2);
+}
+
+.glass-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(26, 16, 44, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #A78BFA, #5DD9C1);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #9F7AFA, #4DC9B1);
+}
