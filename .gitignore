@@ -6,3 +6,5 @@ dist/
 server/.env
 .venv/
 server/.venv/
+__pycache__/
+*.pyc
