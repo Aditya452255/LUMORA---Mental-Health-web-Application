@@ -2,3 +2,7 @@ node_modules
 build/
 dist/
 .cache/
+.env
+server/.env
+.venv/
+server/.venv/

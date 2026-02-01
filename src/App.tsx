@@ -21,7 +21,8 @@ function AppContent() {
   return (
     <div className="relative min-h-screen">
       <CosmicBackground />
-      <Routes>
+      <div className="app-glass">
+        <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -33,7 +34,8 @@ function AppContent() {
         <Route path="/knowledge" element={<Knowledge />} />
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+        </Routes>
+      </div>
       {showChatButton && <FloatingChatButton />}
     </div>
   );

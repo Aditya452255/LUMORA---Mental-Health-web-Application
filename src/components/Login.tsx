@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { useAuth } from '../hooks/useAuth';
+import { motion } from 'framer-motion';
 import { User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,12 +9,22 @@ export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { login } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock login - in production, this would call Firebase Auth
-    if (email && password) {
-      localStorage.setItem('userName', email.split('@')[0]);
+    if (!email || !password) return;
+
+    try {
+      await login(email, password);
+      const storedName = localStorage.getItem('userName');
+      // `login` stores token and user; keep userName in localStorage for current UI
+      const user = JSON.parse(localStorage.getItem('user') || 'null');
+      if (user?.name) localStorage.setItem('userName', user.name);
       navigate('/dashboard');
+    } catch (err: any) {
+      console.error(err);
+      alert(err?.message || err?.message || 'Login failed');
     }
   };
 

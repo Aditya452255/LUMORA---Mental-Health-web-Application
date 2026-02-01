@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Sparkles, Brain, Music, Info, MessageCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -64,7 +64,7 @@ export function LandingPage() {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="max-w-4xl w-full glass-card-intense p-16 text-center relative overflow-hidden"
+          className="max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem] w-full min-h-[520px] md:min-h-[600px] lg:min-h-[640px] xl:min-h-[680px] 2xl:min-h-[720px] glass-card-intense p-20 md:p-24 text-center relative overflow-hidden rounded-[28px]"
         >
           {/* Glow effects */}
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal-400/10 rounded-full blur-3xl" />
@@ -75,7 +75,7 @@ export function LandingPage() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="mb-6"
+              className="mb-6 text-5xl md:text-6xl lg:text-7xl"
             >
               Unlock Your
               <br />
@@ -108,22 +108,34 @@ export function LandingPage() {
               transition={{ delay: 1 }}
               className="flex justify-center gap-12"
             >
-              {features.map((feature, index) => (
-                <motion.button
-                  key={feature.label}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 1 + index * 0.1 }}
-                  className="flex flex-col items-center gap-2 group cursor-pointer"
-                >
-                  <div className="w-14 h-14 rounded-full glass-card flex items-center justify-center group-hover:neon-glow transition-all">
-                    <feature.icon className="w-6 h-6 text-teal-400" />
-                  </div>
-                  <span className="text-sm text-white/80">{feature.label}</span>
-                </motion.button>
-              ))}
+              {features.map((feature, index) => {
+                const onClick = () => {
+                  // route to relaxation with tab param for those three features
+                  if (feature.label === 'Breathing') return navigate('/relaxation?tab=breathing');
+                  if (feature.label === 'Meditation') return navigate('/relaxation?tab=meditation');
+                  if (feature.label === 'Soundscapes') return navigate('/relaxation?tab=soundscapes');
+                  // fallback: go to dashboard for other features
+                  return navigate('/dashboard');
+                };
+
+                return (
+                  <motion.button
+                    key={feature.label}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 1 + index * 0.1 }}
+                    className="flex flex-col items-center gap-2 group cursor-pointer"
+                    onClick={onClick}
+                  >
+                    <div className="w-14 h-14 rounded-full glass-card flex items-center justify-center group-hover:neon-glow transition-all">
+                      <feature.icon className="w-6 h-6 text-teal-400" />
+                    </div>
+                    <span className="text-sm text-white/80">{feature.label}</span>
+                  </motion.button>
+                );
+              })}
             </motion.div>
           </div>
 

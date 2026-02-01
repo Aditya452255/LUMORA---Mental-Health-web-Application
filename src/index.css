@@ -364,6 +364,103 @@
   }
 }
 
+/* === Global Aurora Background & Glassmorphism (replaced old particles) === */
+
+:root {
+  --bg-1: #0b0f25;
+  --bg-2: #1a1337;
+  --soft-white: #f0f0ff;
+  --accent-1: #7ed6ff;
+  --accent-2: #b388ff;
+  --glass-bg: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.12);
+}
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #0b0f25, #1a1337);
+  position: relative;
+  overflow: hidden;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  z-index: -1;
+  background: radial-gradient(circle at 30% 40%, #7bf2ff33, transparent 60%),
+              radial-gradient(circle at 70% 60%, #b57bff33, transparent 60%),
+              radial-gradient(circle at 50% 20%, #8fffdd22, transparent 70%);
+  filter: blur(120px);
+  animation: auroraMove 35s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+  opacity: 0.7;
+}
+
+@keyframes auroraMove {
+  0% { transform: translateX(-50px) translateY(0px); }
+  50% { transform: translateX(50px) translateY(40px); }
+  100% { transform: translateX(-30px) translateY(-20px); }
+}
+
+/* Global glassmorphism utilities for cards/sections/navbars */
+.glass-card, .glass-card-intense, .glass-navbar {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(120,70,255,0.12);
+  color: var(--soft-white);
+}
+
+.glass-card-intense { background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02)); }
+
+/* Hover neon effect */
+.glass-card:hover, .glass-card-intense:hover, .glass-navbar:hover {
+  transform: scale(1.02);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 0 35px rgba(179,136,255,0.14), 0 6px 30px rgba(0,0,0,0.35);
+  border-color: rgba(126,214,255,0.12);
+}
+
+/* Top navigation styling */
+.top-navbar, header, nav, .glass-navbar {
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(126,214,255,0.04);
+}
+
+/* Ensure background layers sit behind app content */
+body::before, body::after { z-index: 0; }
+.content-root, .app-shell, #root > div { position: relative; z-index: 10; }
+
+/* Small helper: make sure main app fills viewport and is transparent so aurora is visible */
+.app-shell { min-height: 100vh; display: flex; flex-direction: column; background: transparent; }
+
+/* Remove any previously used aurora star classes or JS-driven elements */
+.aurora-star, .aurora-decor { display: none !important; }
+
+/* App shell ensures transparent backgrounds and full-screen coverage */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+
+/* Make any top-level plain containers transparent so glass shows through */
+main, .app-shell > div, .app-shell > section, .app-shell > header {
+  background: transparent !important;
+}
+
+
 @layer utilities {
   .pointer-events-none {
     pointer-events: none;
@@ -1564,7 +1661,6 @@
 }
 
 body {
-  background: var(--cosmic-purple);
   color: #fff;
   font-family: Manrope, -apple-system, BlinkMacSystemFont, sans-serif;
   overflow-x: hidden;
@@ -1959,3 +2055,445 @@ input {
   inherits: false;
   initial-value: 1;
 }
+
+/*  ====== FULL THEME: Aurora background + glass UI ====== */
+/* Paste into global CSS (index.css / App.css) and ensure it's loaded last */
+
+:root{
+  --bg-top: #0b0f25;
+  --bg-bottom: #1a1337;
+  --glass-bg: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.10);
+  --accent1: #7ed6ff;
+  --accent2: #b388ff;
+  --neon-shadow: rgba(124,80,255,0.2);
+  --card-radius: 18px;
+  --glass-blur: 18px;
+}
+
+/* Reset + base */
+html,body,#root{ height:100%; width:100%; margin:0; padding:0; }
+body {
+  font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  color: #e9e9f7;
+  overflow-x:hidden;
+  overflow-y: auto !important;
+  position:relative;
+}
+
+/* OPTIONAL BACKGROUND IMAGE (fallback or texture) */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  /* If you later export a pure aurora PNG from Figma, replace this URL */
+  background-image: url('/mnt/data/cec37431-c4bf-4ef4-9218-6156d95a2aa9.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.16;              /* subtle, not overpowering */
+  filter: blur(28px) saturate(1.05);
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* Procedural Aurora Layers (dominant) */
+body::after,
+html::before {
+  content:"";
+  position:fixed;
+  inset:-25%;
+  z-index:-4;
+  mix-blend-mode: screen;
+  filter: blur(110px);
+  opacity:0.85;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 30%, rgba(126,214,255,0.28), transparent 40%),
+    radial-gradient(circle at 75% 60%, rgba(179,136,255,0.25), transparent 45%),
+    radial-gradient(circle at 52% 12%, rgba(140,255,221,0.12), transparent 55%);
+  animation: aurora1 34s ease-in-out infinite alternate;
+}
+html::before{
+  animation-name: aurora2;
+  animation-duration: 48s;
+  opacity: 0.45;
+  filter: blur(160px) saturate(1.1);
+}
+
+/* soft vignette */
+body::marker, body::selection { background: transparent; }
+#root::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background: radial-gradient(50% 60% at 50% 60%, rgba(0,0,0,0.0), rgba(0,0,0,0.22));
+  pointer-events:none;
+}
+
+/* aurora motion */
+@keyframes aurora1{
+  0% { transform: translate3d(-60px, 0, 0) scale(1.02); }
+  50% { transform: translate3d(40px, 36px, 0) scale(1.03); }
+  100% { transform: translate3d(-20px, -28px, 0) scale(1.01); }
+}
+@keyframes aurora2{
+  0% { transform: translate3d(20px, -10px, 0) scale(1.04); }
+  50% { transform: translate3d(-40px, 44px, 0) scale(1.01); }
+  100% { transform: translate3d(30px, 10px, 0) scale(1.03); }
+}
+
+/* Tiny dust / faint particles (CSS dots) */
+.particles-lite {
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.18) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px);
+  background-size: 6px 6px, 20px 20px;
+  opacity: 0.06; /* very faint */
+  mix-blend-mode: screen;
+  transform: translateZ(0);
+}
+
+/* ===== GLOBAL GLASS CONTAINER - root wrapper ===== */
+.app-glass {
+  max-width:1200px;
+  margin:48px auto;
+  padding: 28px;
+  border-radius: 30px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 12px 40px rgba(3,4,12,0.6), 0 0 28px rgba(120,70,255,0.04);
+  position: relative;
+  z-index: 2;
+}
+
+/* subtle top glow under container */
+.app-glass::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:-18px;
+  width:60%;
+  height:16px;
+  border-radius:20px;
+  background: linear-gradient(90deg, rgba(126,214,255,0.06), rgba(179,136,255,0.06));
+  filter: blur(10px);
+  pointer-events:none;
+}
+
+/* NAVBAR glass (top) */
+.nav-glass{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 20px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* Headline */
+.hero-title{
+  font-size:48px;
+  line-height:1.0;
+  margin: 28px 0 12px;
+  font-weight:700;
+  color: #f3f3ff;
+  text-align:center;
+}
+
+/* Subtitle */
+.hero-sub{
+  text-align:center;
+  color: rgba(243,243,255,0.78);
+  margin-bottom: 18px;
+}
+
+/* Grid of cards */
+.cards-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+  gap:18px;
+  margin-top:24px;
+}
+
+/* Individual glass card */
+.glass-card{
+  padding:16px;
+  border-radius: 14px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(calc(var(--glass-blur) - 6px));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 6px));
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 6px 22px rgba(6,8,20,0.45), 0 0 18px rgba(120,70,255,0.04);
+  transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms;
+  position: relative;
+  overflow: hidden;
+}
+
+/* neon edge highlight */
+.glass-card::before{
+  content:"";
+  position:absolute;
+  inset: 0;
+  pointer-events:none;
+  border-radius:inherit;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.02));
+  box-shadow: inset 0 0 36px rgba(120,70,255,0.04);
+  mix-blend-mode: screen;
+  opacity:0.9;
+}
+
+/* hover glow */
+.glass-card:hover{
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 18px 60px rgba(8,10,30,0.6), 0 0 48px var(--neon-shadow);
+}
+.glass-card .play-btn{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:20px;
+  background: linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#0b0f25;
+  font-weight:600;
+  box-shadow: 0 6px 22px rgba(124,80,255,0.18);
+  border: none;
+}
+
+/* small subtle rounded dots (like selector) */
+.ui-dots {
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  margin-top:18px;
+}
+.ui-dots span {
+  display:block;
+  width:8px; height:8px; border-radius:50%;
+  background: rgba(255,255,255,0.12);
+  box-shadow: 0 0 8px rgba(126,214,255,0.03);
+}
+.ui-dots span.active{ background: var(--accent1); box-shadow: 0 0 12px rgba(126,214,255,0.18); }
+
+/* small responsive adjustments */
+@media (max-width:900px){
+  .hero-title{ font-size:34px; }
+  .app-glass{ margin: 22px; padding:18px; border-radius:14px; }
+  .cards-grid{ gap:12px; }
+}
+
+/* end of full theme */
+
+/* === PERFECT AURORA BACKGROUND (User-supplied exact Figma look) === */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #09111f 0%, #0d0a2a 100%);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* LEFT TEAL AURORA STREAK */
+body::before {
+  content: "";
+  position: fixed;
+  top: -10%;
+  left: -20%;
+  width: 80%;
+  height: 160%;
+  background: radial-gradient(circle at 30% 50%, #7bf2ff55 0%, transparent 60%);
+  filter: blur(140px);
+  opacity: 0.9;
+  z-index: -3;
+  animation: auroraLeft 35s ease-in-out infinite alternate;
+}
+
+/* RIGHT PURPLE GLOW */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: -15%;
+  width: 70%;
+  height: 140%;
+  background: radial-gradient(circle at 70% 40%, #b57bff44 0%, transparent 65%);
+  filter: blur(160px);
+  opacity: 0.8;
+  z-index: -3;
+  animation: auroraRight 45s ease-in-out infinite alternate;
+}
+
+/* SOFT VIGNETTE AROUND EDGES */
+#root::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 60%, transparent 60%, rgba(0,0,0,0.28));
+}
+
+/* VERY FAINT DUST PARTICLES */
+#root::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 6px 6px, 22px 22px;
+  opacity: 0.06;
+}
+
+/* ANIMATIONS */
+@keyframes auroraLeft {
+  0% { transform: translateY(-40px); }
+  100% { transform: translateY(40px); }
+}
+
+@keyframes auroraRight {
+  0% { transform: translateY(40px); }
+  100% { transform: translateY(-30px); }
+}
+
+/* UPDATED GLASS CONTAINER (Matches Figma More Closely) */
+.app-glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 28px;
+  box-shadow:
+    inset 0 0 40px rgba(255,255,255,0.03),
+    0 10px 40px rgba(0,0,0,0.55),
+    0 0 30px rgba(124,80,255,0.08);
+}
+
+/* navbar exact glow */
+.nav-glass {
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(22px);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 22px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 6px 24px rgba(0,0,0,0.25);
+}
+
+/* button exact glow */
+.glow-btn {
+  background: linear-gradient(135deg, #7bf2ff, #b57bff);
+  border-radius: 16px;
+  padding: 10px 20px;
+  border: none;
+  color: #0b0f25;
+  font-weight: 600;
+  box-shadow: 0 0 22px rgba(123,242,255,0.45);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.glow-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 30px rgba(123,242,255,0.65);
+}
+
+/* End PERFECT AURORA block */
+
+/* ===========================
+   FINAL Figma-Level AURORA BG
+   =========================== */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #07142a 0%, #0a0825 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* LEFT TEAL AURORA (STRONGER + BRIGHTER) */
+body::before {
+  content: "";
+  position: fixed;
+  top: -15%;
+  left: -20%;
+  width: 90%;
+  height: 160%;
+  background: radial-gradient(circle at 25% 40%, #7bf2ff99 0%, transparent 60%);
+  filter: blur(180px);
+  opacity: 0.95;
+  z-index: -4;
+  animation: auroraLeft 32s ease-in-out infinite alternate;
+}
+
+/* RIGHT PURPLE GLOW (BRIGHT + WIDER) */
+body::after {
+  content: "";
+  position: fixed;
+  top: -10%;
+  right: -20%;
+  width: 90%;
+  height: 180%;
+  background: radial-gradient(circle at 70% 50%, #b57bffaa 0%, transparent 65%);
+  filter: blur(200px);
+  opacity: 0.9;
+  z-index: -4;
+  animation: auroraRight 38s ease-in-out infinite alternate;
+}
+
+/* GLOBAL DARK VIGNETTE */
+#root::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 60%, transparent 55%, rgba(0,0,0,0.55));
+}
+
+/* DUST PARTICLES (STRONGER + SHARPER) */
+#root::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size: 6px 6px, 22px 22px;
+  opacity: 0.12; /* ↑ from 0.06 */
+}
+
+/* SMOOTH AURORA MOTION */
+@keyframes auroraLeft {
+  0% { transform: translateY(-60px); }
+  100% { transform: translateY(60px); }
+}
+
+@keyframes auroraRight {
+  0% { transform: translateY(50px); }
+  100% { transform: translateY(-50px); }
+}
+
+/* End FINAL Figma-Level AURORA BG */
+
+

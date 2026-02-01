@@ -1,0 +1,3 @@
+Initial commit (exclude build artifacts)
+
+Add project files, exclude build artifacts from tracking.

@@ -137,7 +137,6 @@ textarea {
 
 body {
   font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--cosmic-purple);
   color: white;
   overflow-x: hidden;
 }

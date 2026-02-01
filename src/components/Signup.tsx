@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { useAuth } from '../hooks/useAuth';
+import { motion } from 'framer-motion';
 import { UserPlus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,16 +11,22 @@ export function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { signup } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
-    // Mock signup - in production, this would call Firebase Auth
-    if (name && email && password) {
-      localStorage.setItem('userName', name);
+    if (!name || !email || !password) return;
+
+    try {
+      await signup(name, email, password);
       navigate('/dashboard');
+    } catch (err: any) {
+      console.error(err);
+      alert(err?.message || 'Signup failed');
     }
   };
 

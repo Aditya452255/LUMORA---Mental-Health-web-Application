@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { ArrowLeft, User, Bell, Moon, Volume2, Lock, Globe, Palette, Save } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
 export function Settings() {
   const navigate = useNavigate();
@@ -22,6 +23,13 @@ export function Settings() {
   const handleSave = () => {
     localStorage.setItem('userName', userName);
     alert('Settings saved successfully!');
+  };
+
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   const settingsSections = [
@@ -109,6 +117,14 @@ export function Settings() {
           <ArrowLeft className="w-5 h-5 text-teal-400" />
         </button>
         <h2>Settings</h2>
+        <div className="ml-auto flex items-center gap-3">
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 rounded-full glass-card hover:neon-glow transition-all text-sm text-red-400"
+          >
+            Log Out
+          </button>
+        </div>
       </motion.div>
 
       <div className="max-w-4xl mx-auto">

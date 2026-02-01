@@ -71,13 +71,21 @@ export function Chatbot() {
 
     setInput('');
     setIsTyping(true);
+    try {
+      const base = import.meta.env.VITE_API_URL || '';
+      const url = base ? `${base.replace(/\/$/, '')}/api/chat` : '/api/chat';
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: input, userId: activeConversationId }),
+      });
 
-    // Simulate AI response
-    setTimeout(() => {
+      const data = await res.json();
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: getAIResponse(input),
+        content: data.reply || 'Sorry, I could not get a response.',
         timestamp: new Date(),
       };
 
@@ -86,13 +94,28 @@ export function Chatbot() {
           return {
             ...conv,
             messages: [...conv.messages, assistantMessage],
+            title: conv.messages.length === 0 ? assistantMessage.content.slice(0, 30) + '...' : conv.title,
           };
         }
         return conv;
       }));
-
+    } catch (err) {
+      console.error('Chat error', err);
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: 'Sorry, something went wrong connecting to the AI companion.',
+        timestamp: new Date(),
+      };
+      setConversations(prev => prev.map(conv => {
+        if (conv.id === activeConversationId) {
+          return { ...conv, messages: [...conv.messages, assistantMessage] };
+        }
+        return conv;
+      }));
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const getAIResponse = (userInput: string): string => {
