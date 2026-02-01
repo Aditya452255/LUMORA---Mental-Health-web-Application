@@ -1,7 +1,7 @@
 
   # Mental Health Web App
 
-  This is a code bundle for Mental Health Web App. The original project is available at https://www.figma.com/design/0mJ55MHI6nFE48y56N8h98/Mental-Health-Web-App.
+  
 
   ## Running the code
 
